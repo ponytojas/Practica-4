@@ -1,18 +1,18 @@
     //************************************//
-   /* PrÃ¡ctica 3---EntradaSalida	 */
-  /*  Francisco JesÃºs Gimenez Hidalgo   */
- /*   Daniel Villalobos del BaÃ±o       */
+   /* Práctica 3---EntradaSalida	 */
+  /*  Francisco Jesús Gimenez Hidalgo   */
+ /*   Daniel Villalobos del Baño       */
 //************************************//
 
 #include <lpc17xx.h>
 #include "awesomeHeaderFile.h"
 
-/*DECLARACIÃ“N DE LAS VARIABLES*/
-int valorBCD;																				//Valor del nÃºmero codificado en BCD
-int valorBIN;																				//Valor del nÃºmero codificado en BINARIO
+/*DECLARACIÓN DE LAS VARIABLES*/
+int valorBCD;																				//Valor del número codificado en BCD
+int valorBIN;																				//Valor del número codificado en BINARIO
 int esPrimerNoCero = 0;
 
-/*DEFINICIÃ“N DE LAS CONSTANTES*/
+/*DEFINICIÓN DE LAS CONSTANTES*/
 #define NUM_MAX 65535
 
 
@@ -20,7 +20,7 @@ int esPrimerNoCero = 0;
 /*FUNCIONES*/
 /***********/
 
-/*FUNCIÃ“N QUE CONTROLA EL DELAY*/
+/*FUNCIÓN QUE CONTROLA EL DELAY*/
 void delay(uint32_t n){															//Introducimos direcctamente el valor de los ms de retraso
   int32_t i;
   n*=20000;
@@ -29,20 +29,20 @@ void delay(uint32_t n){															//Introducimos direcctamente el valor de l
 
 
 
-/*FUNCIÃ“N PRINCIPAL*/
+/*FUNCIÓN PRINCIPAL*/
 int main(){
   int i = 0, valor = 0, ledTonto, ledEncendido, pos = 0, numeroDisplay = 0;
   int32_t tiempoTranscurrido;
 				int test = 0;
 
-  //Llamadas a funciones de inicializaciÃ³n
+  //Llamadas a funciones de inicialización
   configurarPuertos();
   limpiarPuertos();
 
   while(1){
 
     valor = getValorInicial();															//Leo valor inicial y lo guardo
-    for(i=valor;i<=NUM_MAX;i++){														//Incrementamos el nÃºmero desde el valor inicial al mÃ¡ximo
+    for(i=valor;i<=NUM_MAX;i++){														//Incrementamos el número desde el valor inicial al máximo
 
       while(!getEsPrimo(i) && i<=NUM_MAX)
       i++;
