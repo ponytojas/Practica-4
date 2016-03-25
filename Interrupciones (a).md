@@ -46,3 +46,17 @@ void SysTick_Handler()
     
     Por ejemplo si hemos hecho LOAD = 50.000, se ejecutará cada 0,5 milisegundos
 }
+
+
+
+
+#Actualización
+
+He comprobado lo de llamar al SysTick_Handler desde otro archivo.c 
+
+Resulta que las variables que se declaren o se usen en esas ordenes se "destruyen" al final del proceso.
+
+Si utilizamos una variable a para alternar un pin, imaginemos si a=0 hacemos esto y si a=1 hacemos lo otro, y cambiamos el valor a al final de las instrucciones, cuando vuelva a terminar el contador, la variable a no existe y tiene que "volver a crearse" aunque hagamos un return a; 
+
+Esto me deja confuso, porque en el intento que estoy haciendo declaro a de forma universal en el main.c justo después de incluir las bibliotecas. Así que las interrupciones deben declararse en el main si usan alguna variable, o bien, hay alguna manera de hacerlo y no se me ha ocurrido.
+
