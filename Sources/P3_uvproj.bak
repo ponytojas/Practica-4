@@ -421,6 +421,11 @@
           <GroupName>SourceFiles</GroupName>
           <Files>
             <File>
+              <FileName>awesomeHeaderFile.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\awesomeHeaderFile.h</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\main.c</FilePath>
@@ -431,14 +436,39 @@
               <FilePath>.\configurarPuertos.c</FilePath>
             </File>
             <File>
-              <FileName>awesomeHeaderFile.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\awesomeHeaderFile.h</FilePath>
-            </File>
-            <File>
               <FileName>getBinToBCD.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\getBinToBCD.c</FilePath>
+            </File>
+            <File>
+              <FileName>limpiarPuertos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\limpiarPuertos.c</FilePath>
+            </File>
+            <File>
+              <FileName>getEsPrimo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\getEsPrimo.c</FilePath>
+            </File>
+            <File>
+              <FileName>setDisplayLooser.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\setDisplayLooser.c</FilePath>
+            </File>
+            <File>
+              <FileName>getValorInicial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\getValorInicial.c</FilePath>
+            </File>
+            <File>
+              <FileName>setNumeroBinario.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\setNumeroBinario.c</FilePath>
+            </File>
+            <File>
+              <FileName>setNumeroBCD.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\setNumeroBCD.c</FilePath>
             </File>
           </Files>
         </Group>
