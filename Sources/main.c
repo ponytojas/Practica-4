@@ -1,5 +1,5 @@
     //************************************//
-   /* Práctica 3---EntradaSalida	 */
+   /* Práctica 4---Interrupciones     	 */
   /*  Francisco Jesús Jimenez Hidalgo   */
  /*   Daniel Villalobos del Baño       */
 //************************************//
@@ -13,16 +13,20 @@ int valorBIN;																				//Valor del número codificado en BINARIO
 int esPrimerNoCero = 0;
 uint32_t contador25 = 0; 
 
-/*DECLARACIÓN DE VARIABLES ESTÁTICAS GLOBALES*/
-static int ejecutarLedTonto = 0;
-static int ejecutarDisplay = 0;
-static int finNumero = 0;
-
 /*DEFINICIÓN DE LAS CONSTANTES*/
 #define NUM_MAX 65535
 #define TRUE 1
 #define FALSE 0
 
+/*DECLARACIÓN DE VARIABLES ESTÁTICAS GLOBALES*/
+static int ejecutarLedTonto = 0;
+static int ejecutarDisplay = 0;
+static int finNumero = 0;
+static int i = 0;
+static int numMax = NUM_MAX;
+static int numMin = 0;
+static int enBinario = FALSE;
+static int incrementar = TRUE;
 
 /***********/
 /*FUNCIONES*/
@@ -39,42 +43,99 @@ void SysTick_Handler(void)  {
 	if ((contador25)%80 == 0) { finNumero = TRUE;}					//Cuando hayan pasado 2000ms hemos terminado de mostrar el número
 }
 
-
+void EINT3_IRQHandler (void)
+{
+	if (LPC_GPIOINT->IO2IntStatF & (1 << 10)) {
+  //raising edge interrupt on pin 2.10 was fired
+  LPC_GPIOINT->IO2IntClr |= (1 << 10); // clear the status
+		limpiarPuertos();
+  
+			if(enBinario == FALSE){									//Si pulsamos KEY1 Binario, si no BCD
+				enBinario = TRUE;
+				setNumeroBinario(i);
+      }
+      else{
+				enBinario = FALSE;
+				setNumeroBCD(i);
+      }
+  return;
+  }
+	
+	if (LPC_GPIOINT->IO2IntStatF & (1 << 11)) {
+  //raising edge interrupt on pin 2.11 was fired
+  LPC_GPIOINT->IO2IntClr |= (1 << 11); // clear the status
+  
+			if(incrementar == FALSE){									//Si pulsamos KEY1 Binario, si no BCD
+				incrementar = TRUE;
+      }
+      else{
+				incrementar = FALSE;
+      }
+  return;
+  }
+	if (LPC_GPIOINT->IO2IntStatR & (1 << 12)) {
+  //raising edge interrupt on pin 2.12 was rising
+  LPC_GPIOINT->IO2IntClr |= (1 << 12); // clear the status
+  
+		numMax= getValorInicial();
+		
+  return;
+  }
+	if (LPC_GPIOINT->IO2IntStatF & (1 << 12)) {
+  //raising edge interrupt on pin 2.12 was fired
+  LPC_GPIOINT->IO2IntClr |= (1 << 12); // clear the status
+  
+			numMin = getValorInicial();
+		
+  return;
+  }
+}
 
 /*FUNCIÓN PRINCIPAL*/
 int main(){
-  int i = 0, valor = 0, ledTonto, ledEncendido, pos = 0, numeroDisplay = 0;
+	int ledTonto, ledEncendido, pos = 0, numeroDisplay = 0;
 
   //Llamadas a funciones de inicialización
   configurarPuertos();
   limpiarPuertos();
-
+	
   while(1){
 
-    valor = getValorInicial();															//Leo valor inicial y lo guardo
-    for(i=valor;i<=NUM_MAX;i++){														//Incrementamos el número desde el valor inicial al máximo
+    
+			if (incrementar){
+				i=numMin-1;
+			} else {i=numMax;}		//Leo valor inicial y lo guardo
+    while(i>=numMin-1 && i <= numMax && i <= NUM_MAX){
+			if ( i <= 0)
+			{
+				i= 0;
+			}
+			
+			if (incrementar){
+				i++;
+			} else {i--;}
 
-      while(!getEsPrimo(i) && i<=NUM_MAX)
-      i++;
+      while(!getEsPrimo(i) && i<=numMax){
+      if (incrementar){
+				i++;
+			} else {i--;}
+			}
 
-      if(i>NUM_MAX)
+      if(i>numMax || i<=0)
       break;
-
-      if((LPC_GPIO2->FIOPIN>>10 & 0x01)){									//Si pulsamos SW2 Binario, si no BCD
-        setNumeroBinario(i);
-      }
-      else{
-        setNumeroBCD(i);
-      }
 
       ledEncendido = 0;
       ledTonto = i;
 			SysTick_Config(SystemCoreClock / 40);      // Systick generará una interrupción cada 25ms
 			contador25 = 0;											 			 //Contador a 0
+			
+				if (enBinario == TRUE) {
+					setNumeroBinario(i);
+				} else {
+					setNumeroBCD(i);
+				}
 
-			/*En este bucle while, mostramos los números en el 
-			display y los leds hasta que pasen los 2000ms
-			*/
+			/*En este bucle while, mostramos los números en el display y los leds hasta que pasen los 2000ms*/
 			while(finNumero != 1) {
 				
 				//Cuando ejecutarLedTonto == TRUE (1) ejecutamos este bloque que se encarga de los leds que parpadean
